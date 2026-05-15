@@ -3,9 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { LayoutDashboard, Users, Briefcase, Settings } from "lucide-react"
-
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 
 const sidebarNavItems = [
   {
@@ -34,30 +32,32 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <nav className="flex flex-col w-64 border-r bg-muted/40 min-h-screen">
+    <nav className="flex flex-col w-64 border-r bg-muted/40 min-h-screen shrink-0">
       <div className="p-6 border-b">
-        <h2 className="font-bold text-2xl tracking-tight text-primary flex items-center gap-2">
+        <Link href="/dashboard" className="flex items-center gap-2 font-bold text-2xl tracking-tight text-primary">
           <Briefcase className="h-6 w-6" />
           MicroCRM
-        </h2>
+        </Link>
       </div>
       <div className="flex-1 overflow-auto py-4">
         <ul className="grid gap-1 px-2">
-          {sidebarNavItems.map((item, index) => {
+          {sidebarNavItems.map((item) => {
             const Icon = item.icon
+            const isActive = pathname === item.href
             return (
-              <li key={index}>
-                <Button
-                  render={<Link href={item.href} />}
-                  variant={pathname === item.href ? "secondary" : "ghost"}
+              <li key={item.href}>
+                <Link
+                  href={item.href}
                   className={cn(
-                    "w-full justify-start gap-2",
-                    pathname === item.href ? "font-semibold" : "font-normal"
+                    "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
+                    isActive
+                      ? "bg-secondary text-secondary-foreground font-semibold"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground font-normal"
                   )}
                 >
                   <Icon className="h-4 w-4" />
                   {item.title}
-                </Button>
+                </Link>
               </li>
             )
           })}
