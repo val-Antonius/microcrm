@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react"
+import { usePathname } from "next/navigation"
 import { useSession, signOut } from "next-auth/react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -7,13 +9,16 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Bell, LogOut, Settings, User } from "lucide-react"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { Bell, LogOut, Menu } from "lucide-react"
+import { SidebarContent } from "./Sidebar"
 
 export function Navbar() {
   const { data: session } = useSession()
+  const pathname = usePathname()
+  const [open, setOpen] = useState(false)
   const user = session?.user
 
   const initials = user?.name
@@ -27,7 +32,20 @@ export function Navbar() {
 
   return (
     <header className="flex h-16 items-center gap-4 border-b bg-background px-6 justify-between">
-      <div className="flex-1" />
+      <div className="flex items-center gap-4 md:hidden">
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle navigation menu</span>
+          </SheetTrigger>
+          <SheetContent side="left" className="flex flex-col w-64 p-0">
+            <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+            <SheetDescription className="sr-only">Mobile navigation menu</SheetDescription>
+            <SidebarContent pathname={pathname} onClick={() => setOpen(false)} />
+          </SheetContent>
+        </Sheet>
+      </div>
+      <div className="flex-1 md:flex-none" />
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" className="h-9 w-9">
           <Bell className="h-4 w-4" />
@@ -47,17 +65,8 @@ export function Navbar() {
               <p className="text-sm font-semibold leading-none">{user?.name ?? "User"}</p>
               <p className="text-xs leading-none text-muted-foreground mt-1">{user?.email}</p>
             </div>
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-destructive"
+              className="text-destructive cursor-pointer"
               onClick={() => signOut({ callbackUrl: "/login" })}
             >
               <LogOut className="mr-2 h-4 w-4" />

@@ -47,18 +47,22 @@ interface KanbanColumnProps {
   stage: Stage
   deals: Deal[]
   isLoading: boolean
+  isActiveTab?: boolean // Added for mobile tabs
   onAdd: () => void
   onEdit: (deal: Deal) => void
   onDelete: (deal: Deal) => void
+  onMove: (deal: Deal, newStage: Stage) => void
 }
 
 export function KanbanColumn({
   stage,
   deals,
   isLoading,
+  isActiveTab = true,
   onAdd,
   onEdit,
   onDelete,
+  onMove,
 }: KanbanColumnProps) {
   const config = STAGE_CONFIG[stage]
   const { setNodeRef, isOver } = useDroppable({ id: stage })
@@ -66,7 +70,7 @@ export function KanbanColumn({
   const totalValue = deals.reduce((sum, d) => sum + d.amount, 0)
 
   return (
-    <div className="flex flex-col min-h-[500px]">
+    <div className={cn("flex-col min-h-[500px]", isActiveTab ? "flex" : "hidden md:flex")}>
       {/* Column header */}
       <div className={cn("rounded-t-xl border border-b-0 px-4 py-3", config.color)}>
         <div className="flex items-center justify-between">
@@ -114,7 +118,7 @@ export function KanbanColumn({
           </div>
         ) : (
           deals.map((deal) => (
-            <DealCard key={deal.id} deal={deal} onEdit={onEdit} onDelete={onDelete} />
+            <DealCard key={deal.id} deal={deal} onEdit={onEdit} onDelete={onDelete} onMove={onMove} />
           ))
         )}
       </div>
