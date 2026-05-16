@@ -26,14 +26,16 @@ export const sidebarNavItems = [
 export function SidebarContent({ pathname, onClick }: { pathname: string, onClick?: () => void }) {
   return (
     <>
-      <div className="p-6 border-b">
-        <Link href="/dashboard" onClick={onClick} className="flex items-center gap-2 font-bold text-2xl tracking-tight text-primary">
-          <Briefcase className="h-6 w-6" />
+      <div className="p-6">
+        <Link href="/dashboard" onClick={onClick} className="flex items-center gap-2 font-bold text-2xl tracking-tight text-foreground premium-interactive">
+          <div className="bg-primary text-primary-foreground p-1.5 rounded-lg shadow-sm">
+            <Briefcase className="h-5 w-5" />
+          </div>
           MicroCRM
         </Link>
       </div>
       <div className="flex-1 overflow-auto py-4">
-        <ul className="grid gap-1 px-2">
+        <ul className="grid gap-1 px-3">
           {sidebarNavItems.map((item) => {
             const Icon = item.icon
             const isActive = pathname === item.href
@@ -43,13 +45,16 @@ export function SidebarContent({ pathname, onClick }: { pathname: string, onClic
                   href={item.href}
                   onClick={onClick}
                   className={cn(
-                    "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
+                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all duration-200 relative group overflow-hidden premium-interactive",
                     isActive
-                      ? "bg-secondary text-secondary-foreground font-semibold"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground font-normal"
+                      ? "bg-accent/50 text-accent-foreground font-medium"
+                      : "text-muted-foreground hover:bg-muted/80 hover:text-foreground font-medium"
                   )}
                 >
-                  <Icon className="h-4 w-4" />
+                  {isActive && (
+                    <span className="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-r-full" />
+                  )}
+                  <Icon className={cn("h-4 w-4", isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
                   {item.title}
                 </Link>
               </li>
@@ -65,7 +70,7 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <nav className="hidden md:flex flex-col w-64 border-r bg-muted/40 min-h-screen shrink-0">
+    <nav className="hidden md:flex flex-col w-64 bg-sidebar min-h-screen shrink-0 border-r border-border/40">
       <SidebarContent pathname={pathname} />
     </nav>
   )

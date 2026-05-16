@@ -51,14 +51,14 @@ export function KanbanBoard() {
     try {
       const [dealsRes, contactsRes] = await Promise.all([
         fetch("/api/deals"),
-        fetch("/api/contacts"),
+        fetch("/api/contacts?limit=all"),
       ])
       if (!dealsRes.ok || !contactsRes.ok) throw new Error()
 
       const deals: Deal[] = await dealsRes.json()
-      const contactsData: Contact[] = await contactsRes.json()
+      const contactsData = await contactsRes.json()
 
-      setContacts(contactsData)
+      setContacts(contactsData.contacts || [])
 
       const grouped: DealsByStage = { LEAD: [], PROPOSAL: [], WON: [], LOST: [] }
       deals.forEach((deal) => { grouped[deal.stage].push(deal) })
@@ -169,7 +169,7 @@ export function KanbanBoard() {
           <h1 className="text-3xl font-bold tracking-tight">Pipeline</h1>
           <p className="text-muted-foreground mt-1">Drag deals between stages to update progress</p>
         </div>
-        <Button onClick={() => handleAdd(activeTab)} className="bg-indigo-600 hover:bg-indigo-700 gap-2 self-start sm:self-auto">
+        <Button onClick={() => handleAdd(activeTab)} className="bg-primary hover:bg-primary/90 text-primary-foreground premium-interactive gap-2 self-start sm:self-auto">
           <Plus className="h-4 w-4" /> Add Deal
         </Button>
       </div>

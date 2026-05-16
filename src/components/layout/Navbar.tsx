@@ -31,10 +31,10 @@ export function Navbar() {
     : "?"
 
   return (
-    <header className="flex h-16 items-center gap-4 border-b bg-background px-6 justify-between">
+    <header className="flex h-16 items-center gap-4 border-b border-border/40 bg-background/80 backdrop-blur-md px-6 justify-between sticky top-0 z-30">
       <div className="flex items-center gap-4 md:hidden">
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
+          <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden premium-interactive" />}>
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </SheetTrigger>
@@ -47,20 +47,20 @@ export function Navbar() {
       </div>
       <div className="flex-1 md:flex-none" />
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="h-9 w-9">
+        <Button variant="ghost" size="icon" className="h-9 w-9 premium-interactive text-muted-foreground hover:text-foreground">
           <Bell className="h-4 w-4" />
           <span className="sr-only">Notifications</span>
         </Button>
         <DropdownMenu>
-          <DropdownMenuTrigger className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            <Avatar className="h-9 w-9 cursor-pointer">
+          <DropdownMenuTrigger className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring premium-interactive">
+            <Avatar className="h-9 w-9 cursor-pointer border shadow-sm">
               <AvatarImage src={user?.image ?? ""} alt={user?.name ?? "User"} />
-              <AvatarFallback className="bg-indigo-100 text-indigo-700 text-xs font-semibold">
+              <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
                 {initials}
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end">
+          <DropdownMenuContent className="w-56 rounded-xl shadow-lg border-border/40" align="end">
             <div className="px-2 py-1.5 border-b mb-1">
               <p className="text-sm font-semibold leading-none">{user?.name ?? "User"}</p>
               <p className="text-xs leading-none text-muted-foreground mt-1">{user?.email}</p>

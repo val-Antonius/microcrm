@@ -12,6 +12,7 @@ import { Briefcase, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -77,23 +78,23 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex">
       {/* Left panel - branding */}
-      <div className="hidden lg:flex flex-col w-1/2 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-12 justify-between relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-1/4 -left-12 w-64 h-64 bg-indigo-500 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-purple-600 rounded-full blur-3xl" />
+      <div className="hidden lg:flex flex-col w-1/2 bg-zinc-950 text-white p-12 justify-between relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-1/4 -left-12 w-64 h-64 bg-primary rounded-full blur-3xl opacity-50" />
+          <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-primary rounded-full blur-3xl opacity-30" />
         </div>
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-12">
-            <div className="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center">
-              <Briefcase className="h-6 w-6" />
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+              <Briefcase className="h-5 w-5 text-primary-foreground" />
             </div>
             <span className="text-2xl font-bold tracking-tight">MicroCRM</span>
           </div>
           <h2 className="text-4xl font-bold leading-tight">
             Your pipeline,<br />
-            <span className="text-indigo-400">finally organized.</span>
+            <span className="text-primary">finally organized.</span>
           </h2>
-          <p className="mt-6 text-slate-400 text-lg leading-relaxed">
+          <p className="mt-6 text-slate-400 text-lg leading-relaxed font-medium">
             Join freelancers and small agencies who use MicroCRM to track
             contacts, manage deals, and close more clients — without the
             enterprise bloat.
@@ -107,10 +108,10 @@ export default function RegisterPage() {
           ].map((f) => (
             <div
               key={f.label}
-              className="bg-white/5 border border-white/10 rounded-xl p-4 text-center backdrop-blur-sm"
+              className="bg-white/5 border border-white/10 rounded-xl p-4 text-center backdrop-blur-sm transition-transform hover:scale-[1.02]"
             >
               <div className="text-2xl mb-1">{f.icon}</div>
-              <p className="text-sm text-slate-300">{f.label}</p>
+              <p className="text-sm font-medium text-slate-300">{f.label}</p>
             </div>
           ))}
         </div>
@@ -118,67 +119,67 @@ export default function RegisterPage() {
 
       {/* Right panel - register form */}
       <div className="flex-1 flex items-center justify-center p-8 bg-background">
-        <div className="w-full max-w-md space-y-6">
+        <div className="w-full max-w-md space-y-8">
           <div className="flex items-center gap-2 lg:hidden mb-8">
-            <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center">
-              <Briefcase className="h-4 w-4 text-white" />
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-sm">
+              <Briefcase className="h-4 w-4 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold">MicroCRM</span>
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Create your account</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">Create your account</h1>
             <p className="text-muted-foreground">Free forever. No credit card required.</p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name" className="font-medium">Full Name</Label>
               <Input
                 id="name"
                 type="text"
                 placeholder="Jane Doe"
                 {...register("name")}
-                className={errors.name ? "border-destructive" : ""}
+                className={cn("h-10 bg-background/50 border-border/60 focus-visible:ring-1 focus-visible:ring-primary shadow-sm", errors.name && "border-destructive focus-visible:ring-destructive")}
               />
               {errors.name && (
                 <p className="text-sm text-destructive">{errors.name.message}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="font-medium">Email</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="you@example.com"
                 {...register("email")}
-                className={errors.email ? "border-destructive" : ""}
+                className={cn("h-10 bg-background/50 border-border/60 focus-visible:ring-1 focus-visible:ring-primary shadow-sm", errors.email && "border-destructive focus-visible:ring-destructive")}
               />
               {errors.email && (
                 <p className="text-sm text-destructive">{errors.email.message}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="font-medium">Password</Label>
               <Input
                 id="password"
                 type="password"
                 placeholder="••••••••"
                 {...register("password")}
-                className={errors.password ? "border-destructive" : ""}
+                className={cn("h-10 bg-background/50 border-border/60 focus-visible:ring-1 focus-visible:ring-primary shadow-sm", errors.password && "border-destructive focus-visible:ring-destructive")}
               />
               {errors.password && (
                 <p className="text-sm text-destructive">{errors.password.message}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label htmlFor="confirmPassword" className="font-medium">Confirm Password</Label>
               <Input
                 id="confirmPassword"
                 type="password"
                 placeholder="••••••••"
                 {...register("confirmPassword")}
-                className={errors.confirmPassword ? "border-destructive" : ""}
+                className={cn("h-10 bg-background/50 border-border/60 focus-visible:ring-1 focus-visible:ring-primary shadow-sm", errors.confirmPassword && "border-destructive focus-visible:ring-destructive")}
               />
               {errors.confirmPassword && (
                 <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
@@ -186,7 +187,7 @@ export default function RegisterPage() {
             </div>
             <Button
               type="submit"
-              className="w-full h-11 bg-indigo-600 hover:bg-indigo-700"
+              className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground premium-interactive mt-2"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -199,7 +200,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/login" className="text-indigo-600 hover:underline font-medium">
+            <Link href="/login" className="text-primary hover:text-primary/80 transition-colors font-medium">
               Sign in
             </Link>
           </p>

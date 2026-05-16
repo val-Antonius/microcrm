@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -70,21 +71,21 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex">
       {/* Left panel - branding */}
-      <div className="hidden lg:flex flex-col w-1/2 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-12 justify-between relative overflow-hidden">
+      <div className="hidden lg:flex flex-col w-1/2 bg-zinc-950 text-white p-12 justify-between relative overflow-hidden">
         {/* Background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-1/4 -left-12 w-64 h-64 bg-indigo-500 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-purple-600 rounded-full blur-3xl" />
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-1/4 -left-12 w-64 h-64 bg-primary rounded-full blur-3xl opacity-50" />
+          <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-primary rounded-full blur-3xl opacity-30" />
         </div>
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-12">
-            <div className="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center">
-              <Briefcase className="h-6 w-6" />
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+              <Briefcase className="h-5 w-5 text-primary-foreground" />
             </div>
             <span className="text-2xl font-bold tracking-tight">MicroCRM</span>
           </div>
           <blockquote className="mt-8">
-            <p className="text-xl font-light leading-relaxed text-slate-200">
+            <p className="text-xl font-medium leading-relaxed text-slate-200">
               &ldquo;Stop losing deals in WhatsApp threads and spreadsheets.
               One workspace to close more business.&rdquo;
             </p>
@@ -97,8 +98,8 @@ export default function LoginPage() {
             { stat: "5 min", label: "Setup time" },
           ].map((item) => (
             <div key={item.stat} className="flex items-center gap-4">
-              <span className="text-2xl font-bold text-indigo-400">{item.stat}</span>
-              <span className="text-slate-400">{item.label}</span>
+              <span className="text-2xl font-bold text-primary">{item.stat}</span>
+              <span className="text-slate-400 font-medium">{item.label}</span>
             </div>
           ))}
         </div>
@@ -106,23 +107,23 @@ export default function LoginPage() {
 
       {/* Right panel - login form */}
       <div className="flex-1 flex items-center justify-center p-8 bg-background">
-        <div className="w-full max-w-md space-y-6">
+        <div className="w-full max-w-md space-y-8">
           {/* Mobile logo */}
           <div className="flex items-center gap-2 lg:hidden mb-8">
-            <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center">
-              <Briefcase className="h-4 w-4 text-white" />
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-sm">
+              <Briefcase className="h-4 w-4 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold">MicroCRM</span>
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">Welcome back</h1>
             <p className="text-muted-foreground">Sign in to your workspace</p>
           </div>
 
           <Button
             variant="outline"
-            className="w-full gap-3 h-11"
+            className="w-full gap-3 h-11 premium-interactive shadow-sm border-border/60 hover:bg-muted/50"
             onClick={handleGoogleSignIn}
             disabled={isGoogleLoading}
           >
@@ -141,41 +142,41 @@ export default function LoginPage() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+              <span className="w-full border-t border-border/40" />
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
+            <div className="relative flex justify-center text-xs uppercase font-medium">
               <span className="bg-background px-2 text-muted-foreground">or</span>
             </div>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="font-medium">Email</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="you@example.com"
                 {...register("email")}
-                className={errors.email ? "border-destructive" : ""}
+                className={cn("h-10 bg-background/50 border-border/60 focus-visible:ring-1 focus-visible:ring-primary shadow-sm", errors.email && "border-destructive focus-visible:ring-destructive")}
               />
               {errors.email && (
                 <p className="text-sm text-destructive">{errors.email.message}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="font-medium">Password</Label>
               <Input
                 id="password"
                 type="password"
                 placeholder="••••••••"
                 {...register("password")}
-                className={errors.password ? "border-destructive" : ""}
+                className={cn("h-10 bg-background/50 border-border/60 focus-visible:ring-1 focus-visible:ring-primary shadow-sm", errors.password && "border-destructive focus-visible:ring-destructive")}
               />
               {errors.password && (
                 <p className="text-sm text-destructive">{errors.password.message}</p>
               )}
             </div>
-            <Button type="submit" className="w-full h-11 bg-indigo-600 hover:bg-indigo-700" disabled={isLoading}>
+            <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground premium-interactive mt-2" disabled={isLoading}>
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
@@ -186,7 +187,7 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-indigo-600 hover:underline font-medium">
+            <Link href="/register" className="text-primary hover:text-primary/80 transition-colors font-medium">
               Create one free
             </Link>
           </p>
